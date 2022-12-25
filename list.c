@@ -4,7 +4,7 @@
 
 
 List *list_new() {
-    return (List *) calloc(1, sizeof(List));
+    return (List *)calloc(1,sizeof(List));
 }
 
 
@@ -85,6 +85,6 @@ int list_remove(List *list, Item *ptr) {
     if (ptr_prev) {
         ptr_prev->next = ptr->next;
     }
-    free(ptr1);
+    free(ptr);
     return 0;
 }

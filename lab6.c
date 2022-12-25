@@ -20,14 +20,22 @@ void str_work(List *line){
     			ptr->data = ' ';
     		}
     		if(ptr_prev->data == ' '){
-    			list_remove(line, ptr_prev);
+    			list_remove(line, ptr);
+    			ptr = ptr_prev->next;
+    			if (!ptr){
+    				break;
+    			}
     		}
     	}
     	if (ptr_prev){
 	    	if (ptr_prev->data == '.' || ptr_prev->data == '!' || ptr_prev->data == '?'){
-	    		while(ptr->data == ' ' || ptr->data == '\t'){
+	    		while(ptr && (ptr->data == ' ' || ptr->data == '\t')){
 	    			list_remove(line, ptr);
-	    			ptr= ptr_prev->next;
+	    			ptr = ptr_prev->next;
+
+	    		}
+	    		if(!ptr){
+	    			break;
 	    		}
 	    		if (ptr->data !='.'){
 	    			capitalize(&(ptr->data));
@@ -43,10 +51,11 @@ void str_work(List *line){
 
 List *get_line(const char *prompt){
 	printf("%s", prompt);
-	List *l = list_new();
+	List *l=list_new();
 	char chr;
 	while((chr = getchar()) != '\n'){
 		if(chr == EOF){
+			free(l);
 			return NULL;
 		}
 		else{
