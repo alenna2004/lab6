@@ -17,15 +17,24 @@ void str_work(List *line){
     while (ptr) {
     	if (ptr->data == ' ' || ptr->data == '\t'){
     		if(ptr->data == '\t'){
-    			ptr->data = ' ';
-    		}
-    		if(ptr_prev->data == ' '){
-    			list_remove(line, ptr);
-    			ptr = ptr_prev->next;
-    			if (!ptr){
+    			if(ptr->next){
+    				ptr->data = ' ';
+    			}
+    			else{
+    				list_remove(line, ptr);
     				break;
     			}
     		}
+	    	if(ptr_prev->data == ' '){
+	    		while(ptr && (ptr->data == ' ' || ptr->data == '\t')){
+	    			list_remove(line, ptr);
+	    			ptr = ptr_prev->next;
+	    		}
+	    		if (!ptr){
+	    		list_remove(line, ptr_prev);
+	    			break;
+	    		}
+	    	}
     	}
     	if (ptr_prev){
 	    	if (ptr_prev->data == '.' || ptr_prev->data == '!' || ptr_prev->data == '?'){
@@ -35,6 +44,7 @@ void str_work(List *line){
 
 	    		}
 	    		if(!ptr){
+	    			list_remove(line, ptr_prev);
 	    			break;
 	    		}
 	    		if (ptr->data !='.'){
@@ -71,8 +81,10 @@ List *get_line(const char *prompt){
 int main(){
 	List *line = get_line("Enter the line: ");
 	while(line){
-		str_work(line);
-		list_print(line);
+		if(line->head){
+			str_work(line);
+			list_print(line);
+		}
 		list_delete(line);
 		line = get_line("Enter the line: ");
 	}

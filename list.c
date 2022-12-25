@@ -21,11 +21,12 @@ void list_delete(List *list) {
 
 void list_print(const List *list) {
     Item *ptr = list->head;
+    printf("\"");
     while (ptr) {
         printf("%c", ptr->data);
         ptr = ptr->next;
     }
-    printf("\n");
+    printf("\"\n");
 }
 
 
